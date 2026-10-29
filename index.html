@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Birdventure</title>
+<meta name="theme-color" content="#050816">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <canvas id="cv"></canvas>
+  <button id="quit" title="Sair">✕</button>
+
+  <!-- MENU -->
+  <div class="screen on" id="sMenu">
+    <h1>Bird<br>venture</h1>
+    <p>Toque na tela para voar. Desvie dos espinhos.<br>1 a 6 jogadores · celular, tablet ou PC.</p>
+    <button class="btn" id="bLocal">Modo Local</button>
+    <button class="btn mg" id="bOnline">Modo Online</button>
+  </div>
+
+  <!-- LOCAL -->
+  <div class="screen" id="sLocal">
+    <h2>Modo Local</h2>
+    <p>Quantos jogadores no mesmo aparelho?</p>
+    <div class="row" id="pickN"></div>
+    <div class="zprev" id="zonePrev"></div>
+    <p id="keysHint" class="small"></p>
+    <button class="btn" id="bLocalGo">Jogar</button>
+    <button class="btn dark small" data-go="sMenu">Voltar</button>
+  </div>
+
+  <!-- ONLINE -->
+  <div class="screen" id="sOnline">
+    <h2>Modo Online</h2>
+    <input id="nameIn" maxlength="12" placeholder="Seu apelido">
+    <button class="btn mg" id="bCreate">Criar sala</button>
+    <p>ou entre com um código</p>
+    <input id="codeIn" maxlength="4" placeholder="CÓDIGO">
+    <button class="btn" id="bJoin">Entrar na sala</button>
+    <div class="msg" id="onMsg"></div>
+    <button class="btn dark small" data-go="sMenu">Voltar</button>
+  </div>
+
+  <!-- SALA -->
+  <div class="screen" id="sLobby">
+    <p>Código da sala</p>
+    <div class="code" id="roomCode">----</div>
+    <p id="lobbyInfo">Passe o código para seus amigos (máx. 6).</p>
+    <div class="plist" id="plist"></div>
+    <button class="btn" id="bStart">Iniciar</button>
+    <div class="msg" id="lbMsg"></div>
+    <button class="btn mg small" id="bCopy">Copiar link da sala</button>
+    <button class="btn dark small" id="bLeave">Sair da sala</button>
+  </div>
+
+  <!-- FIM -->
+  <div class="screen glass" id="sOver">
+    <h2 id="overT">Fim de jogo</h2>
+    <div class="plist" id="rank"></div>
+    <p id="overMsg"></p>
+    <button class="btn" id="bAgain">Jogar de novo</button>
+    <button class="btn dark small" id="bMenu">Menu</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
