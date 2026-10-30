@@ -1,0 +1,82 @@
+:root{--bg:#050816;--panel:#0b1330;--cy:#00e5ff;--mg:#ff2fd0;--tx:#d6e4ff;--mut:#7f93c4;--ft:"Orbitron","Rajdhani","Segoe UI",system-ui,sans-serif;--fb:"Rajdhani","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--tx);font-family:var(--fb);overscroll-behavior:none}
+body{background:
+ radial-gradient(60% 50% at 15% 8%,rgba(0,229,255,.18),transparent 70%),
+ radial-gradient(55% 50% at 88% 92%,rgba(255,47,208,.18),transparent 70%),
+ linear-gradient(#050816,#070b1f)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;
+ background-image:linear-gradient(rgba(0,229,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.05) 1px,transparent 1px);
+ background-size:44px 44px}
+
+/* palco ocupa sempre a tela inteira; o jogo é desenhado centralizado dentro dele */
+#stage{position:fixed;inset:0;overflow:hidden;font-size:16px;touch-action:none}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+
+/* ---------- telas ---------- */
+.screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;gap:1em;
+ padding:max(1.2em,env(safe-area-inset-top)) max(1.2em,env(safe-area-inset-right)) max(1.2em,env(safe-area-inset-bottom)) max(1.2em,env(safe-area-inset-left));
+ background:linear-gradient(rgba(5,8,22,.94),rgba(5,8,22,.97));z-index:20;text-align:center;overflow-y:auto;overflow-x:hidden}
+.screen,.screen *{touch-action:pan-y}
+.screen input{touch-action:auto}
+.screen.on{display:flex}
+.screen>:first-child{margin-top:auto}.screen>:last-child{margin-bottom:auto}
+.screen.glass{background:rgba(5,8,22,.86);backdrop-filter:blur(6px)}
+h1{margin:0;font-family:var(--ft);font-weight:900;font-size:max(34px,4.2em);line-height:.95;letter-spacing:.04em;text-transform:uppercase;
+ background:linear-gradient(90deg,var(--cy),var(--mg));-webkit-background-clip:text;background-clip:text;color:transparent;
+ filter:drop-shadow(0 0 .25em rgba(0,229,255,.55))}
+h2{margin:0;font-family:var(--ft);font-size:max(18px,1.7em);letter-spacing:.08em;text-transform:uppercase;color:var(--cy);text-shadow:0 0 .6em rgba(0,229,255,.6)}
+p{margin:0;color:var(--mut);font-size:max(14px,1.05em);font-weight:600;letter-spacing:.03em;max-width:32em}
+p.small{font-size:max(12px,.85em)}
+
+.btn{font-family:var(--ft);font-weight:700;font-size:max(13px,1.05em);letter-spacing:.12em;text-transform:uppercase;color:#05131a;
+ background:linear-gradient(135deg,var(--cy),#6af2ff);border:none;padding:.95em 2.2em;min-width:min(17em,100%);cursor:pointer;
+ clip-path:polygon(.9em 0,100% 0,100% calc(100% - .9em),calc(100% - .9em) 100%,0 100%,0 .9em);
+ filter:drop-shadow(0 0 .5em rgba(0,229,255,.55));transition:transform .08s,filter .15s}
+.btn:hover{filter:drop-shadow(0 0 .9em rgba(0,229,255,.9))}
+.btn:active{transform:scale(.96)}
+.btn.mg{background:linear-gradient(135deg,var(--mg),#ff7be8);color:#1c0518;filter:drop-shadow(0 0 .5em rgba(255,47,208,.55))}
+.btn.mg:hover{filter:drop-shadow(0 0 .9em rgba(255,47,208,.9))}
+.btn.dark{background:#16204a;color:var(--tx);filter:none}
+.btn.small{font-size:max(11px,.8em);padding:.7em 1.6em;min-width:0}
+.btn:disabled{opacity:.4}
+input{font-family:var(--ft);font-weight:700;font-size:max(16px,1.1em);text-align:center;letter-spacing:.08em;color:var(--tx);background:#0b1330;
+ border:1px solid rgba(0,229,255,.6);border-radius:.4em;padding:.8em 1em;width:min(17em,100%);outline:none;
+ box-shadow:inset 0 0 .8em rgba(0,229,255,.15);-webkit-user-select:text;user-select:text}
+input:focus{border-color:var(--cy);box-shadow:0 0 .9em rgba(0,229,255,.5)}
+input::placeholder{color:#4b5d8f}
+#codeIn{text-transform:uppercase;letter-spacing:.5em;text-indent:.5em}
+.row{display:flex;gap:.6em;align-items:center;justify-content:center;flex-wrap:wrap}
+.pick{width:3em;height:3em;border-radius:.4em;border:1px solid rgba(0,229,255,.5);background:#0b1330;font-family:var(--ft);font-weight:700;
+ font-size:max(14px,1.1em);color:var(--tx);cursor:pointer}
+.pick.sel{background:var(--cy);color:#05131a;box-shadow:0 0 .9em rgba(0,229,255,.8)}
+.code{font-family:var(--ft);font-weight:900;font-size:max(36px,3.6em);letter-spacing:.25em;text-indent:.25em;color:#fff;background:#0b1330;
+ border:1px solid var(--cy);border-radius:.3em;padding:.1em .4em;box-shadow:0 0 1.2em rgba(0,229,255,.45),inset 0 0 1em rgba(0,229,255,.2);text-shadow:0 0 .4em var(--cy);max-width:100%}
+.plist{display:flex;flex-direction:column;gap:.5em;width:min(22em,100%)}
+.pl{display:flex;align-items:center;gap:.7em;background:var(--panel);border:1px solid rgba(255,255,255,.1);border-left:4px solid var(--c,var(--cy));
+ border-radius:.3em;padding:.55em .9em;font-weight:700;font-size:max(15px,1.15em);text-align:left;letter-spacing:.03em}
+.pl i{width:1em;height:1em;border-radius:50%;background:var(--c);box-shadow:0 0 .7em var(--c);flex:none}
+.pl b{margin-left:auto;font-family:var(--ft);color:var(--c,var(--cy));font-size:.85em}
+.msg{min-height:1.3em;color:#ff7b9c;font-weight:700;font-size:max(13px,1em)}
+.msg.ok{color:var(--cy)}
+
+/* prévia das regiões de toque (modo local) */
+.zprev{width:min(14em,70%);display:flex;flex-direction:column;gap:.3em;border:1px solid rgba(0,229,255,.4);padding:.3em;border-radius:.4em;flex:none}
+.zr{flex:1;display:flex;gap:.3em}
+.zr i{flex:1;display:grid;place-items:center;font-style:normal;font-family:var(--ft);font-weight:700;font-size:max(11px,.9em);color:var(--c);
+ border:1px dashed var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border-radius:.25em}
+
+/* botão de sair (discreto, pede confirmação) */
+#quit{position:absolute;display:none;z-index:30;left:max(.6em,env(safe-area-inset-left));top:max(.6em,env(safe-area-inset-top));
+ min-width:2.4em;height:2.4em;padding:0 .7em;border-radius:1.2em;border:1px solid rgba(255,255,255,.3);background:rgba(11,19,48,.75);
+ color:var(--mut);font-family:var(--ft);font-weight:700;font-size:max(12px,.85em);cursor:pointer}
+#quit.arm{background:var(--mg);color:#1c0518;border-color:var(--mg)}
+
+/* telas baixas (celular deitado) */
+@media (max-height:520px){
+ .screen{gap:.6em;padding-top:.8em;padding-bottom:.8em}
+ h1{font-size:max(28px,2.6em)}h1 br{display:none}
+ .code{font-size:max(28px,2.4em)}
+ .btn{padding:.7em 1.6em}
+ .zprev{display:none}
+}
